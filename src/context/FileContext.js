@@ -10,26 +10,26 @@ export const authHeader = () => ({
 export const FileContext = createContext()
 
 export const FileProvider = (props) => {
-    const [uploadProgress, setUploadProgress] = useState()
+  const [uploadProgress, setUploadProgress] = useState()
 
-    const uploadFile = async (formData) => {
-        try {
-          const config = {
-            onUploadProgress: (progressEvent) => {
-              const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-              setUploadProgress(progress);
-            },
-            headers: authHeader(),
-          };
-    
-          // Make the POST request to the server endpoint using Axios
-          const response = await axios.post(`${BASE_URL}upload`, formData, config);
-    
-          console.log('File uploaded successfully:', response.data);
-        } catch (error) {
-          console.error('File upload failed:', error);
-        }
+  const uploadFile = async (formData) => {
+    try {
+      const config = {
+        onUploadProgress: (progressEvent) => {
+          const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+          setUploadProgress(progress);
+        },
+        headers: authHeader(),
       };
+
+      // Make the POST request to the server endpoint using Axios
+      const response = await axios.post(`${BASE_URL}upload`, formData, config);
+
+      return response.data
+    } catch (error) {
+      console.error('File upload failed:', error);
+    }
+  };
 
   return (
     <FileContext.Provider
