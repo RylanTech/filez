@@ -8,28 +8,22 @@ export const authHeader = () => ({
 });
 
 export const FileContext = createContext()
-const fs = require('fs');
 
 export const FileProvider = (props) => {
     const [uploadProgress, setUploadProgress] = useState()
 
-    const uploadFile = async (file) => {
+    const uploadFile = async (formData) => {
         try {
-          const formData = new FormData();
-          formData.append('file', file);
-    
           const config = {
             onUploadProgress: (progressEvent) => {
               const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
               setUploadProgress(progress);
             },
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
+            headers: authHeader(),
           };
     
           // Make the POST request to the server endpoint using Axios
-          const response = await axios.post('https://example.com/upload', formData, config);
+          const response = await axios.post(`${BASE_URL}upload`, formData, config);
     
           console.log('File uploaded successfully:', response.data);
         } catch (error) {
@@ -40,7 +34,8 @@ export const FileProvider = (props) => {
   return (
     <FileContext.Provider
       value={{
-        uploadFile
+        uploadFile,
+        uploadProgress
       }}
     >
       {props.children}

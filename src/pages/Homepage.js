@@ -5,7 +5,7 @@ function Homepage() {
 
     return (
         <>
-            <img className="cloudsPhoto" src="clouds.png" />
+            <img className="cloudsPhoto" src="Clouds.png" />
             <Container>
                 <Row>
                     <center>
