@@ -1,7 +1,17 @@
+import { useEffect } from "react"
 import { Container, Row } from "react-bootstrap"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 function Homepage() {
+
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        let token = localStorage.getItem("myFilezUserToken")
+        if (!token) {
+            navigate('login')
+        }
+    },[])
 
     return (
         <>
@@ -21,7 +31,7 @@ function Homepage() {
                             </div>
                         </Link>
                         <Link className="fpOptionLink col-12 col-md-5"
-                        to={'/index'}
+                        to={'/indexing'}
                         >
                             <div className="fpOption">
                                 <center>

@@ -13,6 +13,7 @@ export const FileProvider = (props) => {
   const [uploadProgress, setUploadProgress] = useState()
 
   const uploadFile = async (formData) => {
+
     try {
       const config = {
         onUploadProgress: (progressEvent) => {
@@ -31,10 +32,37 @@ export const FileProvider = (props) => {
     }
   };
 
+  const loginUser = async (user) => {
+    const loginUserURL = `${BASE_URL}user/signin`;
+    try {
+      const response = await axios.post(loginUserURL, user);
+      if (response.status === 200) {
+        localStorage.setItem("myFilezUserToken", response.data.token);
+        return response.data;
+      }
+    } catch (error) {
+      return error
+    }
+  };
+
+  const getFilesByUser = async () => {
+    const url = `${BASE_URL}file/`
+    try {
+      const response = await axios.get(url, {
+        headers: authHeader(),
+      });
+      return response.data;
+    } catch (error) {
+      return error
+    }
+  }
+
   return (
     <FileContext.Provider
       value={{
         uploadFile,
+        loginUser,
+        getFilesByUser,
         uploadProgress
       }}
     >

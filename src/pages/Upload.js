@@ -8,6 +8,9 @@ function Upload() {
     const [message, setMessage] = useState(null)
     const [fileName, setFileName] = useState(null)
 
+    const [name, setName] = useState(null)
+    const [description, setDescription] = useState(null)
+
     const { uploadFile, uploadProgress } = useContext(FileContext)
 
     const handleFileChange = (event) => {
@@ -17,7 +20,6 @@ function Upload() {
     async function uploadFileToUrl() {
         if (file) {
             setMessage(null)
-            console.log(file)
             const newFile = new File([file], file.name, {
                 type: file.type,
             });
@@ -25,9 +27,13 @@ function Upload() {
             const formData = new FormData();
             formData.append("file", newFile);
 
-            const fileName = await uploadFile(formData); // Pass the formData variable
-            if (fileName) {
-                setFileName(`http://localhost:3001${fileName.downloadURL}`)
+            formData.append("filename", name)
+            formData.append("filedes", description)
+
+            const uploadedFile = await uploadFile(formData); // Pass the formData variable
+
+            if (uploadedFile) {
+                setFileName(`http://localhost:3001/${uploadedFile.path}`)
             }
         } else {
             setMessage("No file uploaded")
@@ -60,6 +66,25 @@ function Upload() {
                                 </>
                             ) : (
                                 <>
+                                    <Form.Group>
+                                        <Form.Label>File Name</Form.Label>
+                                        <Form.Control
+                                            className="col-12"
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label>description</Form.Label>
+
+                                        <Form.Control
+                                            placeholder="optional"
+                                            className="col-12"
+                                            value={description}
+                                            onChange={(e) => setDescription(e.target.value)}
+                                        />
+                                    </Form.Group>
+                                    <br /><br /><br /><br />
                                     <div className="col-12 col-md-4">
                                         <Form.Control
                                             type="file"
@@ -86,25 +111,27 @@ function Upload() {
                             )}
                         </Row>
                     </div>
-                </Row>
-                {fileName ? (
-                    <>
-                        <Row>
-                            <div className="box">
-                                <Row>
-                                    <Form.Control
-                                        className="col-12"
-                                        value={fileName}
-                                    />
-                                </Row>
-                            </div>
-                        </Row>
-                    </>
-                ) : (
-                    <>
-                    </>
-                )}
-            </Container>
+                </Row >
+                {
+                    fileName ? (
+                        <>
+                            <Row>
+                                <div className="box">
+                                    <Row>
+                                        <Form.Control
+                                            className="col-12"
+                                            value={fileName}
+                                        />
+                                    </Row>
+                                </div>
+                            </Row>
+                        </>
+                    ) : (
+                        <>
+                        </>
+                    )
+                }
+            </Container >
         </>
     )
 }
