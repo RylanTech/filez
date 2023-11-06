@@ -7,10 +7,9 @@ function Indexing() {
     const navigate = useNavigate()
     const [files, setFiles] = useState();
     const [fileIsSelected, setFileIsSelected] = useState(false)
+    const [fileArray, setFileArray] = useState([])
 
-    let fileArray = []
-
-    const { getFilesByUser } = useContext(FileContext)
+    const { getFilesByUser, deleteFileArr } = useContext(FileContext)
 
     useEffect(() => {
         let token = localStorage.getItem("myFilezUserToken")
@@ -43,25 +42,46 @@ function Indexing() {
         }
     }
 
-    function handleSelection(id) {
-        let i = removeNumberFromArray(fileArray, id)
-
-        if (i) {
-            fileArray.push(id)
+    function handleSelection(num) {
+        let arr = fileArray
+        if (arr.includes(num)) {
+            // Number exists in the array, remove it.
+            const index = arr.indexOf(num);
+            arr.splice(index, 1);
+        } else {
+            // Number doesn't exist in the array, push it.
+            arr.push(num);
         }
+        setFileArray(arr)
 
-        function removeNumberFromArray(arr, numberToRemove) {
-            const index = arr.indexOf(numberToRemove);
-            if (index !== -1) {
-                
-                return false
-            } else {
-                return true
-            }
+        if (arr.length > 0) {
+            setFileIsSelected(true)
+        } else {
+            setFileIsSelected(false)
         }
+    }
 
-        console.log(fileArray)
-        
+    async function handleDelete() {
+        await deleteFileArr(fileArray).then(
+            window.location.reload()
+        )
+    }
+
+    function copyLinkToClipboard(link) {
+        // Create a temporary input element to copy the link
+        const tempInput = document.createElement('input');
+        tempInput.value = link;
+        document.body.appendChild(tempInput);
+
+        // Select the link text and copy it to the clipboard
+        tempInput.select();
+        document.execCommand('copy');
+
+        // Remove the temporary input element
+        document.body.removeChild(tempInput);
+
+        // Optionally, provide feedback to the user
+        alert('Link copied to clipboard: ' + link);
     }
 
     function displayFiles() {
@@ -74,17 +94,34 @@ function Indexing() {
                             <Row>
                                 <div className="col-1">
                                     <Form.Check
-                                        onClick={() => handleSelection(file.fileId)}
+                                        onClick={() => {
+                                            handleSelection(file.fileId)
+                                        }}
                                     />
                                 </div>
-                                <div className="col-5 col-md-2">
+                                <div className="col-2 col-md-2">
                                     {file.name}
                                 </div>
-                                <div className="col-6 col-md-2">
+                                <div className="col-2 col-md-2">
                                     {convertDateToString(file.uploadDate)}
                                 </div>
-                                <div className="col-12 col-md-7">
-                                    <a className="downloadLink" target="_blank" href={`http://localhost:3001/${file.path}`}>{splitString(file.path, 40)}</a>
+                                <div className="col-1 col-md-2"/>
+                                <a className="col-3 col-md-2" href={`http://localhost:3001/${file.path}`}>
+                                <Button  variant="success">
+                                    Download
+                                </Button>
+                                </a>
+                                <div className="col-3 col-md-2">
+                                <Button
+                                    onClick={() => {
+                                        copyLinkToClipboard(`http://localhost:3001/${file.path}`)
+                                    }}
+                                >
+                                    Copy Link
+                                </Button>
+                                </div>
+                                <div className="col-12">
+                                    <a className="downloadLink" target="_blank" href={`http://localhost:3001/${file.path}`}>{splitString(file.path, 60)}</a>
                                 </div>
                             </Row>
                         </div>
@@ -111,6 +148,7 @@ function Indexing() {
                     <>
                         <Button
                             variant="danger"
+                            onClick={handleDelete}
                         >
                             Delete
                         </Button>

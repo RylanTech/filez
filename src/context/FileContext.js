@@ -57,12 +57,27 @@ export const FileProvider = (props) => {
     }
   }
 
+  const deleteFileArr = async (arr) => {
+
+    const url = `${BASE_URL}file/deletearr/`
+
+    try {
+      const response =await axios.post(url, arr, {
+        headers: authHeader()
+      })
+      return response.data
+    } catch (error) {
+      return error
+    }
+  }
+
   return (
     <FileContext.Provider
       value={{
         uploadFile,
         loginUser,
         getFilesByUser,
+        deleteFileArr,
         uploadProgress
       }}
     >
