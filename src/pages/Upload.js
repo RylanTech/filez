@@ -55,7 +55,7 @@ function Upload() {
 
                             {btnC ? (
                                 <>
-                                    <div className="col-12 col-md-6">
+                                    <div className="col-12">
                                         <center>
                                             Upload progress<br />
                                             <div style={{ width: `${uploadProgress}%` }} className="progressBar" />
@@ -85,7 +85,7 @@ function Upload() {
                                         />
                                     </Form.Group>
                                     <br /><br /><br /><br />
-                                    <div className="col-12 col-md-4">
+                                    <div className="col-12">
                                         <Form.Control
                                             type="file"
                                             id="fileInput"
