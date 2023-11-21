@@ -33,7 +33,7 @@ function Upload() {
             const uploadedFile = await uploadFile(formData); // Pass the formData variable
 
             if (uploadedFile) {
-                setFileName(`http://localhost:3001/${uploadedFile.path}`)
+                setFileName(`http://localhost:3001/uploads/${uploadedFile.path}`)
             }
         } else {
             setMessage("No file uploaded")

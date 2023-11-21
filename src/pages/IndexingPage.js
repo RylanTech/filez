@@ -99,29 +99,43 @@ function Indexing() {
                                         }}
                                     />
                                 </div>
-                                <div className="col-2 col-md-2">
+                                <div className="col-2">
                                     {file.name}
                                 </div>
-                                <div className="col-2 col-md-2">
+                                <div className="col-md-3" />
+                                <div className="col-12 col-md-6">
+                                    <Row>
+                                        <div className="col-6">
+                                            <Button
+                                                className="col-12"
+                                                variant="success"
+                                                onClick={() => {
+                                                    copyLinkToClipboard(`http://localhost:3001/download/${file.path}`)
+                                                }}>
+                                                Download Link
+                                            </Button>
+                                        </div>
+                                        <div className="col-6">
+                                            <Button
+                                                className="col-12"
+                                                onClick={() => {
+                                                    copyLinkToClipboard(`http://localhost:3001/uploads/${file.path}`)
+                                                }}
+                                            >
+                                                View Link
+                                            </Button>
+                                        </div>
+                                    </Row>
+                                </div>
+                                <div className="col-9 col-md-11">
+                                    <a
+                                        className="downloadLink"
+                                        target="_blank"
+                                        href={`http://localhost:3001/${file.path}`}
+                                    >uploads/{splitString(file.path, 60)}</a>
+                                </div>
+                                <div className="col-3 col-md-1">
                                     {convertDateToString(file.uploadDate)}
-                                </div>
-                                <div className="col-1 col-md-2"/>
-                                <a className="col-3 col-md-2" href={`http://localhost:3001/${file.path}`}>
-                                <Button  variant="success">
-                                    Download
-                                </Button>
-                                </a>
-                                <div className="col-3 col-md-2">
-                                <Button
-                                    onClick={() => {
-                                        copyLinkToClipboard(`http://localhost:3001/${file.path}`)
-                                    }}
-                                >
-                                    Copy Link
-                                </Button>
-                                </div>
-                                <div className="col-12">
-                                    <a className="downloadLink" target="_blank" href={`http://localhost:3001/${file.path}`}>{splitString(file.path, 60)}</a>
                                 </div>
                             </Row>
                         </div>
