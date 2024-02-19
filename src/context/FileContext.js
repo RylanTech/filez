@@ -1,7 +1,7 @@
 import { createContext, useState } from "react";
 import axios from 'axios'
 
-const BASE_URL = "http://localhost:3001/api/";
+
 
 export const authHeader = () => ({
   Authorization: `Bearer ${localStorage.getItem("myFilezUserToken")}`,
@@ -10,6 +10,11 @@ export const authHeader = () => ({
 export const FileContext = createContext()
 
 export const FileProvider = (props) => {
+
+
+  const [ip, setIp] = useState("localhost:3001")
+  const BASE_URL = `http://${ip}/api/`
+
   const [uploadProgress, setUploadProgress] = useState()
 
   const uploadFile = async (formData) => {
@@ -78,7 +83,8 @@ export const FileProvider = (props) => {
         loginUser,
         getFilesByUser,
         deleteFileArr,
-        uploadProgress
+        uploadProgress,
+        ip
       }}
     >
       {props.children}

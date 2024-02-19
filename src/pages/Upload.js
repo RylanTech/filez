@@ -11,7 +11,7 @@ function Upload() {
     const [name, setName] = useState(null)
     const [description, setDescription] = useState(null)
 
-    const { uploadFile, uploadProgress } = useContext(FileContext)
+    const { uploadFile, uploadProgress, ip } = useContext(FileContext)
 
     const handleFileChange = (event) => {
         setFile(event.target.files[0]);
@@ -33,7 +33,7 @@ function Upload() {
             const uploadedFile = await uploadFile(formData); // Pass the formData variable
 
             if (uploadedFile) {
-                setFileName(`http://localhost:3001/uploads/${uploadedFile.path}`)
+                setFileName(`http://${ip}/uploads/${uploadedFile.path}`)
             }
         } else {
             setMessage("No file uploaded")

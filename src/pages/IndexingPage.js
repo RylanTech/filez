@@ -5,11 +5,11 @@ import { FileContext } from "../context/FileContext"
 
 function Indexing() {
     const navigate = useNavigate()
-    const [files, setFiles] = useState();
+    const [files, setFiles] = useState(null);
     const [fileIsSelected, setFileIsSelected] = useState(false)
     const [fileArray, setFileArray] = useState([])
 
-    const { getFilesByUser, deleteFileArr } = useContext(FileContext)
+    const { getFilesByUser, deleteFileArr, ip } = useContext(FileContext)
 
     useEffect(() => {
         let token = localStorage.getItem("myFilezUserToken")
@@ -19,7 +19,13 @@ function Indexing() {
 
         async function getFileData() {
             const filez = await getFilesByUser()
-            setFiles(filez)
+            console.log(filez)
+            if (0 < filez.length) {
+                console.log(filez.length)
+                setFiles(filez)
+            } else {
+                setFiles(null)
+            }
         }
         getFileData()
 
@@ -85,7 +91,6 @@ function Indexing() {
     }
 
     function displayFiles() {
-        // console.log(files)
         if (files) {
             return files.map((file) => {
                 return (
@@ -110,7 +115,7 @@ function Indexing() {
                                                 className="col-12"
                                                 variant="success"
                                                 onClick={() => {
-                                                    copyLinkToClipboard(`http://localhost:3001/download/${file.path}`)
+                                                    copyLinkToClipboard(`http://${ip}/download/${file.path}`)
                                                 }}>
                                                 Download Link
                                             </Button>
@@ -119,7 +124,7 @@ function Indexing() {
                                             <Button
                                                 className="col-12"
                                                 onClick={() => {
-                                                    copyLinkToClipboard(`http://localhost:3001/uploads/${file.path}`)
+                                                    copyLinkToClipboard(`http://${ip}/uploads/${file.path}`)
                                                 }}
                                             >
                                                 View Link
@@ -131,7 +136,7 @@ function Indexing() {
                                     <a
                                         className="downloadLink"
                                         target="_blank"
-                                        href={`http://localhost:3001/${file.path}`}
+                                        href={`http://${ip}/${file.path}`}
                                     >uploads/{splitString(file.path, 60)}</a>
                                 </div>
                                 <div className="col-3 col-md-1">

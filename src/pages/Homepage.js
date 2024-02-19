@@ -1,9 +1,7 @@
 import { useEffect } from "react"
 import { Container, Row } from "react-bootstrap"
 import { Link, useNavigate } from "react-router-dom"
-
 function Homepage() {
-
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -11,6 +9,7 @@ function Homepage() {
         if (!token) {
             navigate('login')
         }
+        
     },[])
 
     return (
